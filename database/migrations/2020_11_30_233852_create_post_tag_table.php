@@ -3,8 +3,10 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\post;
+use App\Models\tag;
 
-class CreateImagesTable extends Migration
+class CreatePostTagTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +15,9 @@ class CreateImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('images', function (Blueprint $table) {
-            $table->id();
-            $table->string('Title');
-            $table->string('Alt');
-            $table->string('Path');
-            $table->morphs('imageable');
+        Schema::create('post_tag', function (Blueprint $table) {
+            $table->foreignIdFor(post::class);
+            $table->foreignIdFor(tag::class);
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreateImagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('images');
+        Schema::dropIfExists('post_tag');
     }
 }
