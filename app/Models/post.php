@@ -21,7 +21,7 @@ class post extends Model
 
     public function setSlugAttribute($value)
     {
-        $this->attributes['Slug'] = Str::slug(rand(0, 99999) . ' ' . $value);
+        $this->attributes['Slug'] = Str::slug(rand(0, 999999) . ' ' . $value);
     }
 
     public function tags()

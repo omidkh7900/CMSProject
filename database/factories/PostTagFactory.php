@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Image;
+use App\Models\PostTag;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ImageFactory extends Factory
+class PostTagFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Image::class;
+    protected $model = PostTag::class;
 
     /**
      * Define the model's default state.
@@ -22,9 +22,7 @@ class ImageFactory extends Factory
     public function definition()
     {
         return [
-            'Title'=>$this->faker->word,
-            'Alt'=>$this->faker->word,
-            'Path'=>$this->faker->image(storage_path('app/public')),
+            'tag_id'=>rand(1,100),
         ];
     }
 }
