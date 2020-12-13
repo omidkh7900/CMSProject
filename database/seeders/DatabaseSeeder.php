@@ -10,6 +10,8 @@ use App\Models\PostTag;
 use App\Models\tag;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,6 +22,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        Role::create(['name'=>'super-admin']);
+        $user=User::create([
+            'name'=>'omid',
+            'email'=>'admin@example.com',
+            'password'=>Hash::make('12345678')
+        ]);
+        $user->assignRole('super-admin');
         User::factory(20)->create();
         Category::factory(50)->create()->each(function ($category){
             Image::factory(rand(0,1))->create(['imageable_type'=>Category::class,'imageable_id'=>$category->id]);
