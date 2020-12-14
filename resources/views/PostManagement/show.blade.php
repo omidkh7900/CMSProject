@@ -8,6 +8,12 @@
         <h4>title : {{$post->Title}}</h4>
         <h4>content : {{$post->Content}}</h4>
         <h4>slug : {{$post->Slug}}</h4>
+        <h4>tags :
+        @foreach($post->tags as $tag)
+         #{{$tag->Title}}  @endforeach</h4>
+        <h4>categories :
+            @foreach($post->categories as $category)
+                {{$category->Title}},  @endforeach</h4>
         <form action="{{route('PostManagement.update',['PostManagement'=>$post->id])}}" class="d-inline" method="post">
             @method('PUT')
             @csrf

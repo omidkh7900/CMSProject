@@ -11,7 +11,9 @@ class PostManagementController extends Controller
     public function index()
     {
         return view('PostManagement.index')
-            ->with('posts', \request()->get('withTrashed') ? post::onlyTrashed()->paginate(20) : post::paginate(20))
+            ->with('posts', \request()->get('withTrashed') ?
+                post::onlyTrashed()->with(['categories', 'image', 'tags'])->paginate(20) :
+                post::with(['categories', 'image', 'tags'])->paginate(20))
             ->with('withTrashed', \request()->get('withTrashed'));
     }
 
