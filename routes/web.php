@@ -14,3 +14,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::resource('UserManagement', UserManagement::class)
     ->except(['create', 'store'])
     ->middleware(['role:super-admin']);
+
+Route::resource('PostManagement', PostManagementController::class)
+    ->except(['create', 'store'])
+    ->middleware(['role:super-admin']);

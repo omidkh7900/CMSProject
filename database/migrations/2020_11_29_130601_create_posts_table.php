@@ -14,6 +14,7 @@ class CreatePostsTable extends Migration
             $table->string('Title');
             $table->text('Content');
             $table->string('Slug')->unique();
+            $table->boolean('published')->default(false);
             $table->foreignIdFor(User::class);
             $table->timestamps();
             $table->softDeletes();
