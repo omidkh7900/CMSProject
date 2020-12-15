@@ -7,10 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
-class post extends Model
+class Post extends Model
 {
     use HasFactory, SoftDeletes;
 
+    const STATUS_DELETED = 'delete';
+    const STATUS_PUBLISHED = 'published';
+    const STATUS_UNPUBLISHED = 'unpublished';
+    const STATUS = 'published';
     protected $guarded = [];
 
     public function setTitleAttribute($value)

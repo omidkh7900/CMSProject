@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\CategoryPost;
 use App\Models\Image;
-use App\Models\post;
+use App\Models\Post;
 use App\Models\PostTag;
 use App\Models\tag;
 use App\Models\User;
@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
             Image::factory(rand(0,1))->create(['imageable_type'=>Category::class,'imageable_id'=>$category->id]);
         });
         tag::factory(100)->create();
-        post::factory(2000)
+        Post::factory(2000)
             ->has(Image::factory())
             ->create()->each(function ($post){
             CategoryPost::factory(rand(1,5))->create(['post_id'=>$post->id]);

@@ -26,7 +26,7 @@ class Category extends Model
 
     public function posts()
     {
-        return $this->belongsToMany(post::class);
+        return $this->belongsToMany(Post::class);
     }
 
     public function image()
