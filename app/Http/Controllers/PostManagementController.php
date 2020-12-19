@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\post;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -12,34 +12,34 @@ class PostManagementController extends Controller
     {
         return view('PostManagement.index')
             ->with('posts', \request()->get('withTrashed') ?
-                post::onlyTrashed()->with(['categories', 'image', 'tags'])->paginate(20) :
-                post::with(['categories', 'image', 'tags'])->paginate(20))
+                Post::onlyTrashed()->with(['categories', 'image', 'tags'])->paginate(20) :
+                Post::with(['categories', 'image', 'tags'])->paginate(20))
             ->with('withTrashed', \request()->get('withTrashed'));
     }
 
-    public function show(post $PostManagement)
+    public function show(Post $post)
     {
-        return view('PostManagement.show')->with('post', $PostManagement)->with('withTrashed', \request()->get('withTrashed'));
+        return view('PostManagement.show')->with('post', $post)->with('withTrashed', \request()->get('withTrashed'));
     }
 
-    public function update(Request $request, post $PostManagement)
+    public function update(Request $request, Post $post)
     {
         $validateR = $request->validate([
-            'Title' => 'required|string|max:255',
-            'Content' => 'required|string',
-            'Slug' => 'required|string',
+            'Title' => 'string|max:255',
+            'Content' => 'string',
+            'Slug' => 'string',
             'published' => 'boolean',
-            'user_id' => 'required|integer',
+            'user_id' => 'integer',
         ]);
-        $PostManagement->update($validateR);
-        return redirect()->route('PostManagement.show', ['PostManagement' => $PostManagement->id]);
+        $post->update($validateR);
+        return redirect()->route('PostManagement.show', ['PostManagement' => $post->id]);
     }
 
-    public function destroy($PostManagement)
+    public function destroy($post)
     {
-        $PostManagement = post::withTrashed()->find($PostManagement);
-        !\request()->get('withTrashed') ?: Storage::delete(explode('app/', $PostManagement->image->Path)[1]);
-        \request()->get('withTrashed') ? $PostManagement->forceDelete() : $PostManagement->delete();
+        $post = Post::withTrashed()->find($post);
+        !\request()->get('withTrashed') ?: Storage::delete(explode('app/', $post->image->Path)[1]);
+        \request()->get('withTrashed') ? $post->forceDelete() : $post->delete();
         return redirect()->route('PostManagement.index');
     }
 }

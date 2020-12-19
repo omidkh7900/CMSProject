@@ -17,5 +17,6 @@ Route::resource('UserManagement', UserManagement::class)
     ->middleware(['role:super-admin']);
 
 Route::resource('PostManagement', PostManagementController::class)
+    ->parameter('PostManagement','post')
     ->except(['create', 'store'])
     ->middleware(['role:super-admin']);
