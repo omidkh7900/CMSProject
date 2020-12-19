@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdatePostRequest extends FormRequest
 {
@@ -13,9 +14,12 @@ class UpdatePostRequest extends FormRequest
 
     public function rules()
     {
-        return [
-            'Title' => 'Required|String|Max:255',
-            'Content' => 'Required|String|Max:65534',
+        $role = [
+            'Title' => 'string|max:255',
+            'Content' => 'string|max:5000',
         ];
+        if (Auth::user()->hasRole('super-admin'))
+            $role['published'] = 'boolean';
+        return $role;
     }
 }
