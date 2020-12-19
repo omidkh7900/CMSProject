@@ -12,6 +12,7 @@ Route::get('/', function () {
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource('UserManagement', UserManagement::class)
+    ->parameter('UserManagement','user')
     ->except(['create', 'store'])
     ->middleware(['role:super-admin']);
 

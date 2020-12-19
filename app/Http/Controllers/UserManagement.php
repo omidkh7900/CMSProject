@@ -15,12 +15,12 @@ class UserManagement extends Controller
         return view('UserManagement.index')->with('users', $users);
     }
 
-    public function show(User $UserManagement)
+    public function show(User $user)
     {
-        return view('UserManagement.show')->with('user', $UserManagement);
+        return view('UserManagement.show')->with('user', $user);
     }
 
-    public function update(Request $request, User $UserManagement)
+    public function update(Request $request, User $user)
     {
         $validationR = $request->validate([
             'name' => 'string|max:50',
@@ -29,13 +29,14 @@ class UserManagement extends Controller
             'password' => 'password',
             'activation' => 'boolean'
         ]);
-        $UserManagement->update($validationR);
-        return redirect()->route('UserManagement.show', ['UserManagement' => $UserManagement->id])->with('user', $UserManagement);
+        $user->update($validationR);
+        return redirect()->route('UserManagement.show', ['UserManagement' => $user->id])
+            ->with('user', $user);
     }
 
-    public function delete(User $UserManagement)
+    public function delete(User $user)
     {
-        $UserManagement->delete();
-        return redirect()->route('UserManagement.index')->with('status', "$UserManagement->name deleted");
+        $user->delete();
+        return redirect()->route('UserManagement.index')->with('status', "$user->name deleted");
     }
 }
