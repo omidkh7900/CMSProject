@@ -20,9 +20,10 @@ class PostManagementController extends Controller
     public function index()
     {
         return view('PostManagement.index')
-            ->with('posts', \request()->get('withTrashed') ?
-                $this->repository->whereStatus(Post::STATUS_DELETED):
-                $this->repository->whereStatus())
+            ->with('posts', $this->repository
+                ->whereStatus(\request('withTrashed')
+                    ? Post::STATUS_DELETED
+                    : null))
             ->with('withTrashed', \request()->get('withTrashed'));
     }
 
@@ -38,12 +39,17 @@ class PostManagementController extends Controller
         return redirect()->route('PostManagement.show', ['post' => $post->id]);
     }
 
+    public function restore($post)
+    {
+        Post::onlyTrashed()->find($post)->restore();
+        return redirect()->route('PostManagement.index')->with('withTrashed', 1);
+    }
+
     public function destroy($post)
     {
-        $post = $this->repository->whereStatus()->find($post);
-//        !\request()->get('withTrashed') ?: Storage::delete(explode('app/', $post->image->Path)[1]);
-//        \request()->get('withTrashed') ? $post->forceDelete() : $post->delete();
-        $this->repository->delete(\request('withTrashed'),$post);
+        $post = $this->repository->whereStatus(\request('withTrashed') ? Post::STATUS_DELETED : null)
+            ->find($post);
+        $this->repository->delete(\request('withTrashed'), $post);
         return redirect()->route('PostManagement.index');
     }
 }

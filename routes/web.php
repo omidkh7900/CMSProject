@@ -20,3 +20,5 @@ Route::resource('PostManagement', PostManagementController::class)
     ->parameter('PostManagement','post')
     ->except(['create', 'store'])
     ->middleware(['role:super-admin']);
+Route::post('PostManagement/{post}/restore','PostManagementController@restore')
+    ->name('PostManagement.restore');

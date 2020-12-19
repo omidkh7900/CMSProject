@@ -22,15 +22,21 @@
                 <td>{{$post->Content}}</td>
                 <td>{{$post->Slug}}</td>
                 <td>@if(!$withTrashed)
-                        <a href="{{route('PostManagement.show',['PostManagement'=>$post->id,'withTrashed'=>$withTrashed??false])}}"
+                        <a href="{{route('PostManagement.show',['post'=>$post->id,'withTrashed'=>0])}}"
                            class="btn btn-info">show</a>
                     @else
                         <form
-                            action="{{route('PostManagement.destroy',['PostManagement'=>$post->id,'withTrashed'=>$withTrashed])}}"
+                            action="{{route('PostManagement.destroy',['post'=>$post->id,'withTrashed'=>$withTrashed])}}"
                             method="post">
                             @csrf
                             @method('delete')
                             <button type="submit" onclick="return confirm('are you sure?')" class="btn btn-danger">hard delete</button>
+                        </form>
+                        <form
+                            action="{{route('PostManagement.restore',['post'=>$post->id,'withTrashed'=>$withTrashed])}}"
+                            method="post">
+                            @csrf
+                            <button type="submit" class="btn btn-info">restore</button>
                         </form>
                     @endif
                 </td>

@@ -14,14 +14,14 @@
         <h4>categories :
             @foreach($post->categories as $category)
                 {{$category->Title}},  @endforeach</h4>
-        <form action="{{route('PostManagement.update',['PostManagement'=>$post->id])}}" class="d-inline" method="post">
+        <form action="{{route('PostManagement.update',['post'=>$post->id])}}" class="d-inline" method="post">
             @method('PUT')
             @csrf
             <input type="hidden" name="published" value="{{$post->published?'0':'1'}}">
             <input type="submit" class="d-inline btn btn-info"
                    value="{{$post->published?"draft":"publish"}}">
         </form>
-        <form action="{{route('PostManagement.destroy',['PostManagement'=>$post->id,'withTrashed'=>$withTrashed])}}"
+        <form action="{{route('PostManagement.destroy',['post'=>$post->id,'withTrashed'=>$withTrashed])}}"
               class="d-inline" method="post">
             @method('delete')
             @csrf
