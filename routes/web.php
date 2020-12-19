@@ -12,12 +12,12 @@ Route::get('/', function () {
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource('UserManagement', UserManagement::class)
-    ->parameter('UserManagement','user')
+    ->parameter('UserManagement', 'user')
     ->except(['create', 'store'])
     ->middleware(['role:super-admin']);
 
 Route::resource('PostManagement', PostManagementController::class)
-    ->parameter('PostManagement','post')
+    ->parameter('PostManagement', 'post')
     ->except(['create', 'store'])
     ->middleware(['role:super-admin']);
 Route::post('PostManagement/{post}/restore','PostManagementController@restore')
@@ -27,4 +27,9 @@ Route::post('PostManagement/{post}/restore','PostManagementController@restore')
 Route::resource('category','CategoryController')
     ->parameter('category','category:slug');
 Route::resource('tag','TagController')
-    ->parameter('tag','tag:slug');
+    ->parameter('tag', 'tag:slug')
+    ->except(['index', 'show'])
+    ->middleware(['role:super-admin']);
+Route::resource('tag', 'TagController')
+    ->parameter('tag', 'tag:slug')
+    ->only(['index', 'show']);
