@@ -2,27 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Post;
+use App\Models\tag;
 use Illuminate\Http\Request;
+use Services\UserRepository;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    protected $repository;
+
+    public function __construct(UserRepository $repository)
     {
         $this->middleware('auth');
+        $this->repository = $repository;
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
-        return view('home');
+        return view('home')
+            ->with('posts', $this->repository->whereStatus(Post::STATUS_PUBLISHED))
+            ->with('tags',tag::all())
+            ->with('categories',Category::all());
     }
 }
