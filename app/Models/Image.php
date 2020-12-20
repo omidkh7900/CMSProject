@@ -11,6 +11,12 @@ class Image extends Model
 
     protected $guarded=[];
 
+    public function setTitleAttribute($value)
+    {
+        $this->attributes['Title'] = $value;
+        $this->Alt = $value;
+    }
+
     public function imageable()
     {
         return $this->morphTo();
