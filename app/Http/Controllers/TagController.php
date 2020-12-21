@@ -2,13 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateTagRequest;
+use App\Http\Requests\UpdateTagRequest;
 use App\Models\tag;
 use Illuminate\Http\Request;
+use Services\interfaces\TagRepository;
 
 class TagController extends Controller
 {
+    protected $tagRepository;
+
+    public function __construct(TagRepository $tagRepository)
+    {
+        $this->tagRepository = $tagRepository;
+    }
+
     public function index()
     {
+        //ایا ماباید برای tag::all یه تابع داخل tagRepository درست کنیم؟
         return view('tag.index')->with('tags', tag::all());
     }
 
@@ -17,15 +28,16 @@ class TagController extends Controller
         return view('tag.create');
     }
 
-    public function store(Request $request)
+    public function store(CreateTagRequest $request)
     {
-        tag::create(['Title' => $request->Title]);
+        $this->tagRepository->create($request->validated());
         return redirect()->route('tag.index');
     }
 
     public function show(tag $tag)
     {
-        return view('tag.show')->with('posts',$tag->posts);
+        //ایا ماباید برای tag->posts یه تابع داخل tagRepository درست کنیم؟
+        return view('tag.show')->with('posts', $tag->posts);
     }
 
     public function edit(tag $tag)
@@ -33,15 +45,15 @@ class TagController extends Controller
         return view('tag.edit')->with('tag', $tag);
     }
 
-    public function update(Request $request, tag $tag)
+    public function update(UpdateTagRequest $request, tag $tag)
     {
-        $tag->update(['Title' => $request->Title]);
+        $this->tagRepository->update($tag,$request->validated());
         return redirect()->route('tag.index');
     }
 
     public function destroy(tag $tag)
     {
-        $tag->delete();
+        $this->tagRepository->delete($tag);
         return redirect()->route('tag.index');
     }
 }
